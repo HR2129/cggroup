@@ -1,63 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const Navbar: React.FC = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isTopVisible, setTopVisible] = useState(true);
 
   // Sidebar toggle handler
   const toggleSidebar = () => {
     setSidebarOpen(!isSidebarOpen);
   };
 
+  // Scroll handler to show/hide top section
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY > 50) {
+        setTopVisible(false);
+      } else {
+        setTopVisible(true);
+      }
+    };
+
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
-    <>
-      {/* Main Navbar */}
+    <div className="bg-white">
+      {/* Top Section - Visible only when scrolled to top */}
+      {isTopVisible && (
+        <motion.div
+          className="max-w-7xl mx-auto font-poppins sticky top-0 z-50 bg-white"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="flex justify-between items-center py-2 px-4">
+            <span className="text-gray-500">
+              World's Largest Medical Equipment Market Place
+            </span>
+            <div className="space-x-4 hidden sm:flex">
+              <a href="#" className="hover:text-red-500">
+                My Account
+              </a>
+              <span>|</span>
+              <a href="#" className="hover:text-red-500">
+                Contact Us
+              </a>
+            </div>
+          </div>
+          <hr className="border-gray-300" />
+        </motion.div>
+      )}
+
+      {/* Bottom Section - Always Sticky */}
       <motion.div
-        className="max-w-7xl mx-auto font-poppins sticky top-0 bg-white z-50"
+        className="max-w-7xl mx-auto font-poppins sticky top-0 z-50"
         initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Top Section */}
-        <motion.div
-          className="flex justify-between items-center py-2 px-4"
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <span className="text-gray-500">
-            World's Largest Medical Equipment Market Place
-          </span>
-          <motion.div
-            className="space-x-4 hidden sm:flex"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            <a href="#" className="hover:text-red-500">
-              My Account
-            </a>
-            <span>|</span>
-            <a href="#" className="hover:text-red-500">
-              Contact Us
-            </a>
-          </motion.div>
-        </motion.div>
-
-        <hr className="border-gray-300" />
-
-        {/* Bottom Section */}
-        <motion.div
-          className="flex justify-between items-center bg-white p-2"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
+        <div className="flex justify-between items-center p-2">
           {/* Logo */}
           <motion.div
             className="logo"
             initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
             <img
@@ -71,7 +79,7 @@ const Navbar: React.FC = () => {
           <motion.div
             className="hidden sm:flex space-x-4"
             initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
             <a href="#" className="text-gray-500 hover:text-red-500">
@@ -110,7 +118,7 @@ const Navbar: React.FC = () => {
               </svg>
             </button>
           </div>
-        </motion.div>
+        </div>
       </motion.div>
 
       {/* Sidebar for Mobile */}
@@ -170,7 +178,7 @@ const Navbar: React.FC = () => {
           </a>
         </motion.div>
       )}
-    </>
+    </div>
   );
 };
 

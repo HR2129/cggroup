@@ -1,6 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Counter } from '../components/Counter';
+import Tabs from '../components/Tabs';
+import { CarouselDemo } from '../components/Carousel';
+import Footer from '@/components/Footer';
 
 const Home: React.FC = () => {
   return (
@@ -121,6 +124,9 @@ const Home: React.FC = () => {
           start selling now.
         </motion.h2>
       </motion.div>
+      <Tabs/>
+      <CarouselDemo/>
+      <Footer/>
     </>
   );
 };
